@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/card_fm"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_marginBottom="10dp"
+    android:layout_marginTop="20dp"
+    android:layout_marginEnd="20dp"
+    android:layout_marginStart="10dp"
+    app:cardElevation="15dp"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/cover"
+            android:layout_width="match_parent"
+            android:layout_height="182dp"
+            app:srcCompat="@color/colorAccent" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/colorAccent"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/icon" />
+
+        <com.varunest.sparkbutton.SparkButton
+            android:id="@+id/icon"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:sparkbutton_iconSize="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cover"
+            app:sparkbutton_activeImage="@drawable/ic_allarm"
+            app:sparkbutton_inActiveImage="@drawable/ic_allarm_inactive"
+            app:sparkbutton_primaryColor="@color/colorPrimary"
+            app:sparkbutton_secondaryColor="@color/colorAccent" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.v7.widget.CardView>
+
