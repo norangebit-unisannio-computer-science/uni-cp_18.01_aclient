@@ -11,15 +11,15 @@ import java.util.*
  *  Date: 22/12/17
  */
 
-data class FlashMob (var name: String, var imagePath: String, var date: Date, var start: LocalTime?, var end: LocalTime?,
+data class FlashMob (var name: String, var start: Date, var end: Date,
                      var description: String=""): Serializable, Comparable<FlashMob> {
 
     override fun compareTo(other: FlashMob): Int {
-        var compare = start?.compareTo(other.start)
+        var compare = start.compareTo(other.start)
         if (compare==0)
-            compare = end?.compareTo(other.end)
+            compare = end.compareTo(other.end)
         if(compare==0)
             compare = name.compareTo(other.name)
-        return compare!!
+        return compare
     }
 }

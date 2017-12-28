@@ -1,14 +1,19 @@
 package it.unisannio.cp.orange.aclient
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.transition.Slide
 import android.view.Menu
 import android.view.MenuItem
 import commons.FlashMob
+import it.unisannio.cp.orange.aclient.rest.GetList
+import it.unisannio.cp.orange.aclient.rest.Path
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import org.restlet.resource.ResourceException
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -18,11 +23,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-        ListInstance.add(FlashMob("patatina", "", Date(), null, null, ""))
-        ListInstance.add(FlashMob("ti", "", Date(), null, null, ""))
-        ListInstance.add(FlashMob("amo", "", Date(), null, null, ""))
-        ListInstance.add(FlashMob("titolo4", "", Date(), null, null, ""))
-
+        ListInstance.setContext(this)
+        GetList().execute("${Path.ip}/list")
 
         val llm = LinearLayoutManager(applicationContext)
         listRV.layoutManager = llm
@@ -45,4 +47,5 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
 }

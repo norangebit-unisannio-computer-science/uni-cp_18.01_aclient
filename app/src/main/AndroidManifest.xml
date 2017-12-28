@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.unisannio.cp.orange.aclient">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,6 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DetailFlashMob"
+            android:label="@string/title_activity_detail_flash_mob"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

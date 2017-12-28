@@ -33,4 +33,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support:cardview-v7:26.1.0'
     compile 'com.github.varunest:sparkbutton:1.0.5'
+    compile 'com.google.code.gson:gson:2.8.1'
+    compile "org.restlet.jee:org.restlet:2.3.12"
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
 }

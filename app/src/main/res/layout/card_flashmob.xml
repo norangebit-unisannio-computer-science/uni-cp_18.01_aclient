@@ -25,7 +25,8 @@
             android:id="@+id/cover"
             android:layout_width="match_parent"
             android:layout_height="182dp"
-            app:srcCompat="@color/colorAccent" />
+            app:srcCompat="@color/colorAccent"
+            android:scaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/title"
