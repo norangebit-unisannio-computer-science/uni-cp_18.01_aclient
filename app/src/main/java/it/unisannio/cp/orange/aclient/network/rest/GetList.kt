@@ -1,16 +1,13 @@
-package it.unisannio.cp.orange.aclient.rest
+package it.unisannio.cp.orange.aclient.network.rest
 
 import android.os.AsyncTask
 import android.util.Log
 
 import com.google.gson.Gson
-import it.unisannio.cp.orange.aclient.ListInstance
-import it.unisannio.cp.orange.aclient.commons.Code
 
 import org.restlet.resource.ClientResource
 import org.restlet.resource.ResourceException
 
-import java.io.IOException
 import java.util.Arrays
 
 /*

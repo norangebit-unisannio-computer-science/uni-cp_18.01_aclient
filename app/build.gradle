@@ -8,7 +8,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "it.unisannio.cp.orange.aclient"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -35,6 +35,6 @@ dependencies {
     compile 'com.github.varunest:sparkbutton:1.0.5'
     compile 'com.google.code.gson:gson:2.8.1'
     compile "org.restlet.jee:org.restlet:2.3.12"
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.github.bumptech.glide:glide:3.8.0'
 
 }

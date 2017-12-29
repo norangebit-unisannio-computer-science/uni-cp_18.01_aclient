@@ -1,4 +1,4 @@
-package it.unisannio.cp.orange.aclient.rest
+package it.unisannio.cp.orange.aclient.network.rest
 
 import android.os.AsyncTask
 import android.util.Log
@@ -9,7 +9,7 @@ import org.restlet.resource.ClientResource
 
 
 import commons.FlashMob
-import it.unisannio.cp.orange.aclient.ListInstance
+import it.unisannio.cp.orange.aclient.model.ListInstance
 import org.restlet.data.ChallengeScheme
 import org.restlet.resource.ResourceException
 

@@ -1,11 +1,10 @@
-package it.unisannio.cp.orange.aclient
+package it.unisannio.cp.orange.aclient.model
 
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.google.gson.Gson
 import commons.FlashMob
+import it.unisannio.cp.orange.aclient.adapters.FlashMobAdapter
 
 
 /*
@@ -42,7 +41,7 @@ object ListInstance{
     }
 
     fun load(){
-        sp?.all?.keys?.forEach { list.add(Gson().fromJson(sp?.getString(it, "null"), FlashMob::class.java)) }
+        sp?.all?.keys?.forEach { ListInstance.list.add(Gson().fromJson(ListInstance.sp?.getString(it, "null"), FlashMob::class.java)) }
         adapter.notifyDataSetChanged()
     }
     fun SharedPreferences.change(func: SharedPreferences.Editor.()->SharedPreferences.Editor) = this.edit().func().apply()

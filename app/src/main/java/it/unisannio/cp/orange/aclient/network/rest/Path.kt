@@ -1,4 +1,4 @@
-package it.unisannio.cp.orange.aclient.rest
+package it.unisannio.cp.orange.aclient.network.rest
 
 
 /*
@@ -10,6 +10,6 @@ package it.unisannio.cp.orange.aclient.rest
  
  
 object Path{
-    val ip = "http://192.168.1.210:8182"
-    val COVER="photo/cover"
+    val ip = "http://192.168.1.244:8182"
+    val COVER="photo/cover.jpg"
 }

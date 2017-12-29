@@ -3,6 +3,8 @@
     package="it.unisannio.cp.orange.aclient">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -11,8 +13,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="it.unisannio.cp.orange.aclient.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+
         <activity
-            android:name=".MainActivity"
+            android:name=".acticities.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -22,7 +35,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DetailFlashMob"
+            android:name=".acticities.DetailFlashMobActivity"
             android:label="@string/title_activity_detail_flash_mob"
             android:theme="@style/AppTheme.NoActionBar"/>
     </application>

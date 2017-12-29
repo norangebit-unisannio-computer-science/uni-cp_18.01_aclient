@@ -1,4 +1,4 @@
-package it.unisannio.cp.orange.aclient.commons
+package it.unisannio.cp.orange.aclient.model.commons
 
 
 /*

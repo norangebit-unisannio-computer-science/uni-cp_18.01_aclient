@@ -1,8 +1,6 @@
-package it.unisannio.cp.orange.aclient
+package it.unisannio.cp.orange.aclient.adapters
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.os.Bundle
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
@@ -12,11 +10,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import com.varunest.sparkbutton.SparkButton
 import com.varunest.sparkbutton.SparkEventListener
 import commons.FlashMob
-import it.unisannio.cp.orange.aclient.rest.Path
+import it.unisannio.cp.orange.aclient.R
+import it.unisannio.cp.orange.aclient.network.rest.Path
+import it.unisannio.cp.orange.aclient.acticities.DetailFlashMobActivity
 import kotlinx.android.synthetic.main.card_flashmob.view.*
 
 
@@ -39,7 +39,7 @@ class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: FlashMobHolder?, position: Int) {
         holder?.title?.text = list[position].name
-        Picasso.with(holder?.itemView?.context).load("${Path.ip}/${list[position].name}/${Path.COVER}")
+        Glide.with(holder?.itemView?.context).load("${Path.ip}/${list[position].name}/${Path.COVER}")
                 .placeholder(R.color.placeholder).into(holder?.cover)
 
         holder?.icon?.setEventListener( object : SparkEventListener {
@@ -56,7 +56,7 @@ class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapt
         })
 
         holder?.card?.setOnClickListener {
-            val intent = Intent(holder.itemView.context, DetailFlashMob::class.java)
+            val intent = Intent(holder.itemView.context, DetailFlashMobActivity::class.java)
             intent.putExtra(Key.POS, position)
             startActivity(holder.itemView.context, intent, null) }
     }
@@ -78,5 +78,4 @@ class FlashMobHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
 object Key{
     val POS = "it.unisannio.cp.orange.aclient.POS"
-    val COVER = "it.unisannio.cp.orange.aclient.COVER"
 }

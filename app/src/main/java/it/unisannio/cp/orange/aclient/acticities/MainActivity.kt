@@ -1,20 +1,17 @@
-package it.unisannio.cp.orange.aclient
+package it.unisannio.cp.orange.aclient.acticities
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.transition.Slide
 import android.view.Menu
 import android.view.MenuItem
-import commons.FlashMob
-import it.unisannio.cp.orange.aclient.rest.GetList
-import it.unisannio.cp.orange.aclient.rest.Path
+import it.unisannio.cp.orange.aclient.model.ListInstance
+import it.unisannio.cp.orange.aclient.R
+import it.unisannio.cp.orange.aclient.network.rest.GetList
+import it.unisannio.cp.orange.aclient.network.rest.Path
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
-import org.restlet.resource.ResourceException
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
