@@ -3,4 +3,11 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_detail_flash_mob">DetailFlashMob</string>
     <string name="no_permission">No permission</string>
+    <string name="user_name">user name</string>
+    <string name="password">password</string>
+    <string name="welcome">WELCOME</string>
+    <string name="intro_slide1_description">Progetto di esame</string>
+    <string name="permissions">Permessi</string>
+    <string name="intro_slide2_permissions">L\'app per funzionare al meglio ha bisogno di alcuni permessi, li puoi concedere ora o più in là quando ti verranno richiesti</string>
+    <string name="skip">skip</string>
 </resources>

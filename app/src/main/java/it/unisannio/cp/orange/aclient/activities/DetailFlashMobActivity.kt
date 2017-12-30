@@ -1,4 +1,4 @@
-package it.unisannio.cp.orange.aclient.acticities
+package it.unisannio.cp.orange.aclient.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity

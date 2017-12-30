@@ -1,8 +1,11 @@
-package it.unisannio.cp.orange.aclient.acticities
+package it.unisannio.cp.orange.aclient.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import it.unisannio.cp.orange.aclient.model.ListInstance
@@ -19,6 +22,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        val sp = applicationContext.getSharedPreferences("settings", Context.MODE_PRIVATE)
+
+        if(sp.getBoolean("first", true))
+            startActivityForResult(Intent(this, IntroActivity::class.java), INTRO_CODE)
 
         ListInstance.setContext(this)
         GetList().execute("${Path.ip}/list")
@@ -45,4 +52,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when(requestCode){
+            INTRO_CODE -> Log.d("INTRO", "in")
+        }
+    }
+
+    companion object {
+        val INTRO_CODE = 1000
+    }
 }

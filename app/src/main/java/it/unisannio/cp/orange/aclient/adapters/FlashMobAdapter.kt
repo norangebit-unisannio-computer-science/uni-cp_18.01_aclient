@@ -16,7 +16,7 @@ import com.varunest.sparkbutton.SparkEventListener
 import commons.FlashMob
 import it.unisannio.cp.orange.aclient.R
 import it.unisannio.cp.orange.aclient.network.rest.Path
-import it.unisannio.cp.orange.aclient.acticities.DetailFlashMobActivity
+import it.unisannio.cp.orange.aclient.activities.DetailFlashMobActivity
 import kotlinx.android.synthetic.main.card_flashmob.view.*
 
 
