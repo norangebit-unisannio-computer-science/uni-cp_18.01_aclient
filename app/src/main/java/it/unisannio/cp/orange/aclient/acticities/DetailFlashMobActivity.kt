@@ -1,6 +1,7 @@
 package it.unisannio.cp.orange.aclient.acticities
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -77,7 +78,10 @@ class DetailFlashMobActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
        when(requestCode){
-           0 -> PostPhoto().execute(imagePath, title.toString())
+           0 -> {
+               if(resultCode == Activity.RESULT_OK)
+                   PostPhoto().execute(imagePath, title.toString())
+           }
            else -> super.onActivityResult(requestCode, resultCode, data)
        }
     }
