@@ -2,4 +2,5 @@
     <string name="app_name">A Client</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_detail_flash_mob">DetailFlashMob</string>
+    <string name="no_permission">No permission</string>
 </resources>
