@@ -1,7 +1,6 @@
 package it.unisannio.cp.orange.aclient.network.rest
 
 import android.os.AsyncTask
-import android.util.Log
 
 import com.google.gson.Gson
 
@@ -10,8 +9,6 @@ import org.restlet.resource.ClientResource
 
 import commons.FlashMob
 import it.unisannio.cp.orange.aclient.model.ListInstance
-import org.restlet.data.ChallengeScheme
-import org.restlet.resource.ResourceException
 
 /*
  *  Author: Raffaele Mignone
@@ -27,22 +24,12 @@ internal class GetFlashMob : AsyncTask<String, Void, FlashMob>() {
         val gson = Gson()
 
         val cr = ClientResource(strings[0])
-        try{
-            cr.setChallengeResponse(ChallengeScheme.HTTP_BASIC, "debug", "debug")
-            val json = cr.get().text
-            Log.d("REST_TEXT", json)
-            return gson.fromJson(json, FlashMob::class.java)
-        }catch (e: ResourceException){
-
-        }
-        return null
+        val json = cr.get().text
+        return gson.fromJson(json, FlashMob::class.java)
     }
 
     override fun onPostExecute(fm: FlashMob?) {
-
-        if (fm != null){
-            Log.d("REST", fm.name)
+        if (fm != null)
             ListInstance.add(fm)
-        }
     }
 }

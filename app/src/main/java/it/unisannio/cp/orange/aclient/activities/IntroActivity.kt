@@ -4,6 +4,7 @@ import agency.tango.materialintroscreen.MaterialIntroActivity
 import agency.tango.materialintroscreen.MessageButtonBehaviour
 import agency.tango.materialintroscreen.SlideFragmentBuilder
 import android.Manifest
+import android.app.Activity
 import android.os.Bundle
 import it.unisannio.cp.orange.aclient.R
 import it.unisannio.cp.orange.aclient.fragments.LoginFragments
@@ -28,7 +29,7 @@ class IntroActivity: MaterialIntroActivity() {
                 .title(getString(R.string.welcome))
                 .description(getString(R.string.intro_slide1_description))
                 .build(),
-                MessageButtonBehaviour({finish()}, getString(R.string.skip)))
+                MessageButtonBehaviour({ setResult(Activity.RESULT_CANCELED); finish()}, getString(R.string.skip)))
 
         addSlide(SlideFragmentBuilder()
                 .backgroundColor(R.color.colorAccent)

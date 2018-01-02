@@ -2,11 +2,11 @@ package it.unisannio.cp.orange.aclient.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import it.unisannio.cp.orange.aclient.adapters.Key
 import it.unisannio.cp.orange.aclient.model.ListInstance
 import it.unisannio.cp.orange.aclient.adapters.PicAdapter
 import it.unisannio.cp.orange.aclient.R
@@ -16,9 +16,11 @@ import it.unisannio.cp.orange.aclient.util.Util
 import kotlinx.android.synthetic.main.activity_detail_flash_mob.*
 import kotlinx.android.synthetic.main.content_detail_flash_mob.*
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Environment
 import android.provider.MediaStore
+import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.widget.Toast
@@ -33,20 +35,23 @@ import kotlin.collections.ArrayList
 class DetailFlashMobActivity : AppCompatActivity() {
 
     var imagePath = ""
+    var sp: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_flash_mob)
         setSupportActionBar(toolbar)
 
+        sp = applicationContext.getSharedPreferences(Util.SP_SETTINGS, Context.MODE_PRIVATE)
+
         fab.setOnClickListener {
             if (Util.checkPermission(applicationContext, android.Manifest.permission.CAMERA))
                 takeAndUploadPhoto()
             else
-                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), CAMERA_PERMISSION)
+                ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), Util.CODE_CAMERA_PERMISSION)
         }
 
-        val fm = ListInstance.get(intent.getIntExtra(Key.POS, 0))
+        val fm = ListInstance.get(intent.getIntExtra(Util.KEY_POS, 0))
 
         val list = ArrayList<String>()
         val adapter = PicAdapter(list)
@@ -66,7 +71,7 @@ class DetailFlashMobActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when(requestCode){
-            CAMERA_PERMISSION -> {
+            Util.CODE_CAMERA_PERMISSION -> {
                 if(grantResults.none { it == PackageManager.PERMISSION_DENIED })
                     takeAndUploadPhoto()
                 else
@@ -78,9 +83,10 @@ class DetailFlashMobActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
        when(requestCode){
-           0 -> {
+           Util.CODE_UPLOAD -> {
                if(resultCode == Activity.RESULT_OK)
-                   PostPhoto().execute(imagePath, title.toString())
+                   PostPhoto().execute(sp?.getString(Util.KEY_USER, null),
+                           sp?.getString(Util.KEY_PASSWORD, null), imagePath, title.toString())
            }
            else -> super.onActivityResult(requestCode, resultCode, data)
        }
@@ -97,23 +103,23 @@ class DetailFlashMobActivity : AppCompatActivity() {
         return image
     }
 
-    fun takeAndUploadPhoto(){
-        val camera = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        var photoFile: File? = null
-        try {
-            photoFile = createImageFile()
-        } catch (e: IOException) {
-            e.printStackTrace()
+    fun takeAndUploadPhoto() {
+        if (sp?.getBoolean(Util.KEY_LOGIN, false) ?: false) {
+            val camera = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            var photoFile: File? = null
+            try {
+                photoFile = createImageFile()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+            val outputUri = FileProvider.getUriForFile(this, Util.AUTHORITY, photoFile)
+            camera.putExtra(MediaStore.EXTRA_OUTPUT, outputUri)
+            startActivityForResult(camera, Util.CODE_UPLOAD)
+        } else{
+            Snackbar.make(findViewById(R.id.detail), R.string.upload_error, Snackbar.LENGTH_SHORT).show()
         }
 
-        val outputUri = FileProvider.getUriForFile(this, AUTHORITY, photoFile)
-        camera.putExtra(MediaStore.EXTRA_OUTPUT, outputUri)
-        startActivityForResult(camera, 0)
-    }
-
-    companion object {
-        val AUTHORITY = "it.unisannio.cp.orange.aclient.fileProvider"
-        val CAMERA_PERMISSION = 1000
     }
 
 }

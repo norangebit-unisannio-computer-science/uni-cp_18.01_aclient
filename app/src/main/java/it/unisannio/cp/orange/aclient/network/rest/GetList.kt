@@ -1,14 +1,11 @@
 package it.unisannio.cp.orange.aclient.network.rest
 
 import android.os.AsyncTask
-import android.util.Log
 
 import com.google.gson.Gson
 
 import org.restlet.resource.ClientResource
 import org.restlet.resource.ResourceException
-
-import java.util.Arrays
 
 /*
  *  Author: Raffaele Mignone
@@ -33,7 +30,6 @@ class GetList : AsyncTask<String, Void, Array<String>>() {
     }
 
     override fun onPostExecute(strings: Array<String>?) {
-        Log.d("REST", Arrays.toString(strings))
         strings?.forEach {  GetFlashMob().execute("${Path.ip}/$it") }
     }
 }

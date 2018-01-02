@@ -1,11 +1,15 @@
 package it.unisannio.cp.orange.aclient.fragments
 
 import agency.tango.materialintroscreen.SlideFragment
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import it.unisannio.cp.orange.aclient.R
+import it.unisannio.cp.orange.aclient.util.Util
+import it.unisannio.cp.orange.aclient.util.change
+import kotlinx.android.synthetic.main.login.*
 
 
 /*
@@ -17,16 +21,21 @@ import it.unisannio.cp.orange.aclient.R
  
  
 class LoginFragments: SlideFragment(){
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v = inflater?.inflate(R.layout.login, container, false)
-        return v
+        return  inflater?.inflate(R.layout.login, container, false)
     }
 
-    override fun backgroundColor(): Int {
-        return R.color.colorPrimary
+    override fun canMoveFurther(): Boolean {
+        val sp = context.getSharedPreferences(Util.SP_SETTINGS, Context.MODE_PRIVATE)
+        sp.change {
+            putString(Util.KEY_USER, etUserName.text.toString())
+            putString(Util.KEY_PASSWORD, etPass.text.toString())
+        }
+        return true
     }
 
-    override fun buttonsColor(): Int {
-        return R.color.colorAccent
-    }
+    override fun backgroundColor() = R.color.colorPrimary
+
+    override fun buttonsColor() = R.color.colorAccent
 }

@@ -1,7 +1,9 @@
 package it.unisannio.cp.orange.aclient.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -12,20 +14,23 @@ import it.unisannio.cp.orange.aclient.model.ListInstance
 import it.unisannio.cp.orange.aclient.R
 import it.unisannio.cp.orange.aclient.network.rest.GetList
 import it.unisannio.cp.orange.aclient.network.rest.Path
+import it.unisannio.cp.orange.aclient.util.Util
+import it.unisannio.cp.orange.aclient.util.change
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
+    var sp: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        val sp = applicationContext.getSharedPreferences("settings", Context.MODE_PRIVATE)
+        sp = applicationContext.getSharedPreferences(Util.SP_SETTINGS, Context.MODE_PRIVATE)
 
-        if(sp.getBoolean("first", true))
-            startActivityForResult(Intent(this, IntroActivity::class.java), INTRO_CODE)
+        if(sp?.getBoolean(Util.KEY_FIRST_LAUNCH, true) ?: true)
+            startActivityForResult(Intent(this, IntroActivity::class.java), Util.CODE_INTRO)
 
         ListInstance.setContext(this)
         GetList().execute("${Path.ip}/list")
@@ -54,11 +59,17 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when(requestCode){
-            INTRO_CODE -> Log.d("INTRO", "in")
+            Util.CODE_INTRO -> {
+                    sp?.change { putBoolean(Util.KEY_FIRST_LAUNCH, false) }
+                    if(resultCode == Activity.RESULT_OK)
+                        sp?.change {
+                            putString(Util.KEY_USER, data?.getStringExtra(Util.KEY_USER))
+                            putString(Util.KEY_PASSWORD, data?.getStringExtra(Util.KEY_PASSWORD))
+                            putBoolean(Util.KEY_LOGIN, true)
+                        }
+                    sp?.change { putBoolean(Util.KEY_LOGIN, true) }
+                }
         }
     }
 
-    companion object {
-        val INTRO_CODE = 1000
-    }
 }

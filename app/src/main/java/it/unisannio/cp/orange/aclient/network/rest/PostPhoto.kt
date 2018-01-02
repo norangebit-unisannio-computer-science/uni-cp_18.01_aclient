@@ -3,7 +3,9 @@ package it.unisannio.cp.orange.aclient.network.rest
 import org.restlet.representation.FileRepresentation
 import org.restlet.resource.ClientResource
 import android.os.AsyncTask
+import org.restlet.data.ChallengeScheme
 import org.restlet.data.MediaType
+import org.restlet.resource.ResourceException
 import java.io.File
 import java.io.IOException
 
@@ -20,14 +22,17 @@ class PostPhoto : AsyncTask<String, Void, String>() {
 
     override fun doInBackground(vararg params: String): String? {
         val cr: ClientResource
-        val filename = File(params[0]).name
-        cr = ClientResource("${Path.ip}/${params[1]}/photo/$filename")
+        val filename = File(params[2]).name
+        cr = ClientResource("${Path.ip}/${params[3]}/photo/$filename")
         var response: String? = null
-        val payload = FileRepresentation(File(params[0]), MediaType.IMAGE_ALL)
+        val payload = FileRepresentation(File(params[2]), MediaType.IMAGE_ALL)
         try {
+            cr.setChallengeResponse(ChallengeScheme.HTTP_BASIC, params[0], params[1])
             response = cr.post(payload).text
         } catch (e: IOException) {
-            val text = "Error: " + cr.status.code + " - " + cr.status.description + " - " + cr.status.reasonPhrase
+            //TODO
+        } catch (e: ResourceException){
+            //TODO
         }
 
         return response

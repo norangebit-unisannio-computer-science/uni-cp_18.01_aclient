@@ -17,6 +17,7 @@ import commons.FlashMob
 import it.unisannio.cp.orange.aclient.R
 import it.unisannio.cp.orange.aclient.network.rest.Path
 import it.unisannio.cp.orange.aclient.activities.DetailFlashMobActivity
+import it.unisannio.cp.orange.aclient.util.Util
 import kotlinx.android.synthetic.main.card_flashmob.view.*
 
 
@@ -57,8 +58,9 @@ class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapt
 
         holder?.card?.setOnClickListener {
             val intent = Intent(holder.itemView.context, DetailFlashMobActivity::class.java)
-            intent.putExtra(Key.POS, position)
-            startActivity(holder.itemView.context, intent, null) }
+            intent.putExtra(Util.KEY_POS, position)
+            startActivity(holder.itemView.context, intent, null)
+        }
     }
 }
 
@@ -74,8 +76,4 @@ class FlashMobHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         cover = itemView.cover
         icon = itemView.icon
     }
-}
-
-object Key{
-    val POS = "it.unisannio.cp.orange.aclient.POS"
 }
