@@ -31,6 +31,7 @@ class LoginFragments: SlideFragment(){
         sp.change {
             putString(Util.KEY_USER, etUserName.text.toString())
             putString(Util.KEY_PASSWORD, etPass.text.toString())
+            putBoolean(Util.KEY_LOGIN, true)
         }
         return true
     }

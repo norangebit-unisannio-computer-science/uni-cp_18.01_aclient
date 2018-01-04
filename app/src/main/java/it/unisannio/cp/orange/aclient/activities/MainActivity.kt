@@ -59,16 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when(requestCode){
-            Util.CODE_INTRO -> {
-                    sp?.change { putBoolean(Util.KEY_FIRST_LAUNCH, false) }
-                    if(resultCode == Activity.RESULT_OK)
-                        sp?.change {
-                            putString(Util.KEY_USER, data?.getStringExtra(Util.KEY_USER))
-                            putString(Util.KEY_PASSWORD, data?.getStringExtra(Util.KEY_PASSWORD))
-                            putBoolean(Util.KEY_LOGIN, true)
-                        }
-                    sp?.change { putBoolean(Util.KEY_LOGIN, true) }
-                }
+            Util.CODE_INTRO -> sp?.change { putBoolean(Util.KEY_FIRST_LAUNCH, false) }
         }
     }
 
