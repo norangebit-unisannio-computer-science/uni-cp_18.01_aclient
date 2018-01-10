@@ -11,4 +11,7 @@
     <string name="intro_slide2_permissions">L\'app per funzionare al meglio ha bisogno di alcuni permessi, li puoi concedere ora o più in là quando ti verranno richiesti</string>
     <string name="skip">skip</string>
     <string name="upload_error">Questa funzione è solo per utenti autenticati</string>
+    <string name="now">now</string>
+    <string name="soon">soon</string>
+    <string name="alarm_set">Allarme impostato</string>
 </resources>

@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import commons.FlashMob
 import it.unisannio.cp.orange.aclient.adapters.FlashMobAdapter
 import it.unisannio.cp.orange.aclient.util.change
+import java.util.*
 
 
 /*
@@ -23,6 +24,7 @@ object ListInstance{
 
     fun add(fm: FlashMob){
         list.add(fm)
+        sort()
         adapter.notifyDataSetChanged()
         sp?.change { putString(fm.name, Gson().toJson(fm, FlashMob::class.java)) }
     }
@@ -31,6 +33,7 @@ object ListInstance{
 
     fun remove(name: String){
         list.removeAll(list.filter { it.name == name })
+        sort()
         adapter.notifyDataSetChanged()
         sp?.change { remove(name) }
     }
@@ -45,4 +48,6 @@ object ListInstance{
         sp?.all?.keys?.forEach { ListInstance.list.add(Gson().fromJson(ListInstance.sp?.getString(it, "null"), FlashMob::class.java)) }
         adapter.notifyDataSetChanged()
     }
+
+    fun sort() = Collections.sort(list)
 }

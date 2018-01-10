@@ -23,11 +23,15 @@ class Util {
         val KEY_FIRST_LAUNCH = "first launch"
         val KEY_LOGIN = "login"
         val KEY_POS = "position"
+        val KEY_BATTERY_SAVE = "battery save"
+        val KEY_TIME = "time"
 
         val SP_SETTINGS = "settings"
 
         val CODE_INTRO = 1000
         val CODE_UPLOAD = 1001
+        val CODE_ALARM_RECEIVER = 1002
+        val CODE_NOTIFY_START = 1003
         val CODE_CAMERA_PERMISSION = 2000
 
         val AUTHORITY = "it.unisannio.cp.orange.aclient.fileProvider"

@@ -24,6 +24,18 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
+        <receiver
+            android:name=".broadcastReceivers.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false"/>
+
+        <service
+            android:name=".services.NotificationPublisherService"
+            android:exported="false"/>
+
+        <service android:name=".services.AlarmJobService"
+            android:exported="false"/>
+
         <activity
             android:name=".activities.MainActivity"
             android:label="@string/app_name"

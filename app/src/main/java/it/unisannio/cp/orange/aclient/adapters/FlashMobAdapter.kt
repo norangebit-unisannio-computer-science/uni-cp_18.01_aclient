@@ -1,5 +1,8 @@
 package it.unisannio.cp.orange.aclient.adapters
 
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.CardView
@@ -17,8 +20,11 @@ import commons.FlashMob
 import it.unisannio.cp.orange.aclient.R
 import it.unisannio.cp.orange.aclient.network.rest.Path
 import it.unisannio.cp.orange.aclient.activities.DetailFlashMobActivity
+import it.unisannio.cp.orange.aclient.broadcastReceivers.AlarmReceiver
+import it.unisannio.cp.orange.aclient.services.NotificationPublisherService
 import it.unisannio.cp.orange.aclient.util.Util
 import kotlinx.android.synthetic.main.card_flashmob.view.*
+import java.util.*
 
 
 /*
@@ -31,6 +37,10 @@ import kotlinx.android.synthetic.main.card_flashmob.view.*
 
 class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapter<FlashMobHolder>() {
 
+    companion object {
+        val MINUTE = 60000
+    }
+
     override fun getItemCount(): Int = list.size
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): FlashMobHolder {
@@ -39,27 +49,71 @@ class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapt
     }
 
     override fun onBindViewHolder(holder: FlashMobHolder?, position: Int) {
+        val fm = list[position]
+        val context = holder?.itemView?.context
         holder?.title?.text = list[position].name
-        Glide.with(holder?.itemView?.context).load("${Path.ip}/${list[position].name}/${Path.COVER}")
+        Glide.with(holder?.itemView?.context).load("${Path.ip}/${fm.name}/${Path.COVER}")
                 .placeholder(R.color.placeholder).into(holder?.cover)
+
+        holder?.icon?.visibility = if (fm.start.time > System.currentTimeMillis()) View.VISIBLE else View.INVISIBLE //TODO fix orario
 
         holder?.icon?.setEventListener( object : SparkEventListener {
             override fun onEventAnimationStart(button: ImageView?, state: Boolean) {
-                Toast.makeText(holder.itemView.context, state.toString(), Toast.LENGTH_SHORT).show()
             }
 
             override fun onEventAnimationEnd(button: ImageView?, state: Boolean) {
-                Toast.makeText(holder.itemView.context, state.toString(), Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.alarm_set, Toast.LENGTH_SHORT).show()
             }
 
             override fun onEvent(button: ImageView, state: Boolean) {
+                /*
+                if (state){
+                    val broadcast = Intent(context, AlarmReceiver::class.java)
+                    broadcast.putExtra(Util.KEY_POS, holder.adapterPosition)
+                    broadcast.putExtra(Util.KEY_TIME, NotificationPublisherService.NOW)
+                    val pending = PendingIntent.getBroadcast(context, Util.CODE_ALARM_RECEIVER, broadcast, PendingIntent.FLAG_UPDATE_CURRENT)
+                    if(context?.getSharedPreferences(Util.SP_SETTINGS, Context.MODE_PRIVATE)?.getBoolean(Util.KEY_BATTERY_SAVE, true) ?: true){
+                        val elapse = fm.start.time - System.currentTimeMillis()
+                        if(elapse < 15*MINUTE){
+                            broadcast.putExtra(Util.KEY_TIME, NotificationPublisherService.SOON)
+                            context?.sendBroadcast(broadcast)
+                        }
+                        else {
+
+                            val extra = Bundle()
+                            extra.putInt(Util.KEY_POS, holder.adapterPosition)
+                            extra.putInt(Util.KEY_TIME, NotificationPublisherService.NOW)
+
+                            Log.d("firebase", "in")
+
+                            val dispatcher = FirebaseJobDispatcher(GooglePlayDriver(context))
+                            val builder = dispatcher.newJobBuilder()
+                            builder.setService(AlarmJobService::class.java)
+                            builder.tag = "test"
+                            builder.isRecurring = false
+                            builder.trigger = Trigger.executionWindow((elapse-10).toInt(), elapse.toInt())
+                            builder.extras = extra
+                            dispatcher.schedule(builder.build())
+                        }
+                    }else{
+                        val alarmMnager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                        alarmMnager.set(AlarmManager.RTC_WAKEUP, fm.start.time, pending)
+                    }
+                }**/
+
+                val broadcast = Intent(context, AlarmReceiver::class.java)
+                broadcast.putExtra(Util.KEY_POS, holder.adapterPosition)
+                broadcast.putExtra(Util.KEY_TIME, NotificationPublisherService.NOW)
+                val pending = PendingIntent.getBroadcast(context, Util.CODE_ALARM_RECEIVER, broadcast, PendingIntent.FLAG_UPDATE_CURRENT)
+                val alarmMnager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                alarmMnager.set(AlarmManager.RTC_WAKEUP, fm.start.time, pending)
             }
         })
 
         holder?.card?.setOnClickListener {
-            val intent = Intent(holder.itemView.context, DetailFlashMobActivity::class.java)
+            val intent = Intent(context, DetailFlashMobActivity::class.java)
             intent.putExtra(Util.KEY_POS, position)
-            startActivity(holder.itemView.context, intent, null)
+            startActivity(context, intent, null)
         }
     }
 }

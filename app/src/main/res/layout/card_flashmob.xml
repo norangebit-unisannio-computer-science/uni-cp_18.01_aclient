@@ -47,8 +47,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cover"
-            app:sparkbutton_activeImage="@drawable/ic_allarm"
-            app:sparkbutton_inActiveImage="@drawable/ic_allarm_inactive"
+            app:sparkbutton_activeImage="@drawable/ic_alarm"
+            app:sparkbutton_inActiveImage="@drawable/ic_alarm_inactive"
             app:sparkbutton_primaryColor="@color/colorPrimary"
             app:sparkbutton_secondaryColor="@color/colorAccent" />
 
