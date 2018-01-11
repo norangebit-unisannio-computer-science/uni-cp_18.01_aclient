@@ -1,9 +1,11 @@
 package it.unisannio.cp.orange.aclient.util
 
+import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.support.v4.content.ContextCompat
+import android.widget.Toast
 
 
 /*
@@ -14,6 +16,11 @@ import android.support.v4.content.ContextCompat
  */
 
 fun SharedPreferences.change(func: SharedPreferences.Editor.()->SharedPreferences.Editor) = this.edit().func().apply()
+
+fun Context.toast(resID: Int, duration: Int = Toast.LENGTH_SHORT) = Toast.makeText(this, resID, duration).show()
+
+fun Context.checkPermission(vararg permission: String) = permission.map { ContextCompat.checkSelfPermission(this, it) }
+        .none { it == PackageManager.PERMISSION_DENIED }
 
 class Util {
     companion object {
@@ -33,10 +40,9 @@ class Util {
         val CODE_ALARM_RECEIVER = 1002
         val CODE_NOTIFY_START = 1003
         val CODE_CAMERA_PERMISSION = 2000
+        val CODE_SD_PERMISSION = 2001
 
         val AUTHORITY = "it.unisannio.cp.orange.aclient.fileProvider"
 
-        fun checkPermission(context: Context, vararg permission: String) = permission.map { ContextCompat.checkSelfPermission(context, it) }
-                .none { it == PackageManager.PERMISSION_DENIED }
     }
 }

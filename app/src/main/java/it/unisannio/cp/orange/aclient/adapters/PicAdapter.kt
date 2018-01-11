@@ -1,5 +1,8 @@
 package it.unisannio.cp.orange.aclient.adapters
 
+import android.Manifest
+import android.content.Context
+import android.os.Environment
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,8 +12,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import it.unisannio.cp.orange.aclient.R
+import it.unisannio.cp.orange.aclient.model.RequestPermission
 import it.unisannio.cp.orange.aclient.network.rest.Path
+import it.unisannio.cp.orange.aclient.util.toast
+import it.unisannio.cp.orange.aclient.network.rest.GetPhoto
+import it.unisannio.cp.orange.aclient.util.checkPermission
 import kotlinx.android.synthetic.main.card_pic.view.*
+import java.io.File
 
 
 /*
@@ -21,7 +29,7 @@ import kotlinx.android.synthetic.main.card_pic.view.*
  */
 
 
-class PicAdapter(private val list: ArrayList<String>, var name: String = ""): RecyclerView.Adapter<PicHolder>() {
+class PicAdapter(private val list: ArrayList<String>, val reqPer: RequestPermission, var name: String = ""): RecyclerView.Adapter<PicHolder>() {
 
     override fun getItemCount(): Int = list.size
 
@@ -31,9 +39,36 @@ class PicAdapter(private val list: ArrayList<String>, var name: String = ""): Re
     }
 
     override fun onBindViewHolder(holder: PicHolder?, position: Int) {
+        val context = holder?.itemView?.context
+
         holder?.title?.text = list[position].substringBefore("_")
-        Glide.with(holder?.itemView?.context).load("${Path.ip}/$name/photo/${list[position]}")
+
+        Glide.with(context).load("${Path.ip}/$name/photo/${list[position]}")
                 .placeholder(R.color.placeholder).into(holder?.pic)
+
+        holder?.icon?.setOnClickListener{
+            if(context?.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ?: false)
+                downloadPhoto(position, context)
+            else
+                reqPer.requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+    }
+
+    fun downloadPhoto(pos: Int, context: Context?){
+          if(Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED){
+                val dir = File("${Environment.getExternalStorageDirectory()}/${Environment.DIRECTORY_PICTURES}", "flashmob")
+
+                if(!dir.exists())
+                    dir.mkdir()
+
+                val outFile = File(dir, list[pos])
+                if(outFile.exists())
+                   context?.toast(R.string.already_exist)
+                else
+                    GetPhoto(outFile).execute("${Path.ip}/$name/photo/${list[pos]}")
+
+            }else
+                context?.toast(R.string.sd_unmount)
     }
 }
 

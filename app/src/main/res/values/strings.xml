@@ -3,6 +3,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_detail_flash_mob">DetailFlashMob</string>
     <string name="no_permission">No permission</string>
+    <string name="permission">Permessi garantiti</string>
     <string name="user_name">user name</string>
     <string name="password">password</string>
     <string name="welcome">WELCOME</string>
@@ -14,4 +15,6 @@
     <string name="now">now</string>
     <string name="soon">soon</string>
     <string name="alarm_set">Allarme impostato</string>
+    <string name="already_exist">Hai già scaricato quest\'immagine</string>
+    <string name="sd_unmount">Memoria esterna non trovata</string>
 </resources>
