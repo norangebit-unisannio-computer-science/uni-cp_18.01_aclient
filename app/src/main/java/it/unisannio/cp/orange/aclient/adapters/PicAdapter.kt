@@ -2,6 +2,7 @@ package it.unisannio.cp.orange.aclient.adapters
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.os.Environment
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
@@ -16,6 +17,8 @@ import it.unisannio.cp.orange.aclient.model.RequestPermission
 import it.unisannio.cp.orange.aclient.network.rest.Path
 import it.unisannio.cp.orange.aclient.util.toast
 import it.unisannio.cp.orange.aclient.network.rest.GetPhoto
+import it.unisannio.cp.orange.aclient.services.DownloadService
+import it.unisannio.cp.orange.aclient.util.Util
 import it.unisannio.cp.orange.aclient.util.checkPermission
 import kotlinx.android.synthetic.main.card_pic.view.*
 import java.io.File
@@ -56,19 +59,23 @@ class PicAdapter(private val list: ArrayList<String>, val reqPer: RequestPermiss
 
     fun downloadPhoto(pos: Int, context: Context?){
           if(Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED){
-                val dir = File("${Environment.getExternalStorageDirectory()}/${Environment.DIRECTORY_PICTURES}", "flashmob")
+              val dir = File("${Environment.getExternalStorageDirectory()}/${Environment.DIRECTORY_PICTURES}", "flashmob")
 
-                if(!dir.exists())
-                    dir.mkdir()
+              if(!dir.exists())
+                  dir.mkdir()
 
-                val outFile = File(dir, list[pos])
-                if(outFile.exists())
-                   context?.toast(R.string.already_exist)
-                else
-                    GetPhoto(outFile).execute("${Path.ip}/$name/photo/${list[pos]}")
+              val outFile = File(dir, list[pos])
+              if(outFile.exists())
+                  context?.toast(R.string.already_exist)
+              else{
+                  val downloadIntent = Intent(context, DownloadService::class.java)
+                  downloadIntent.putExtra(Util.KEY_URL, "${Path.ip}/$name/photo/${list[pos]}")
+                  downloadIntent.putExtra(Util.KEY_FILE, outFile)
+                  context?.startService(downloadIntent)
+              }
 
-            }else
-                context?.toast(R.string.sd_unmount)
+          }else
+              context?.toast(R.string.sd_unmount)
     }
 }
 

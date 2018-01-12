@@ -32,6 +32,8 @@ class Util {
         val KEY_POS = "position"
         val KEY_BATTERY_SAVE = "battery save"
         val KEY_TIME = "time"
+        val KEY_FILE = "file"
+        val KEY_URL = "url"
 
         val SP_SETTINGS = "settings"
 
@@ -39,6 +41,7 @@ class Util {
         val CODE_UPLOAD = 1001
         val CODE_ALARM_RECEIVER = 1002
         val CODE_NOTIFY_START = 1003
+        val CODE_NOTIFY_DOWNLOAD = 1004
         val CODE_CAMERA_PERMISSION = 2000
         val CODE_SD_PERMISSION = 2001
 

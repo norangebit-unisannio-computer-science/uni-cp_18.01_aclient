@@ -9,4 +9,7 @@ For example, the following paths element tells FileProvider that you intend to r
     <external-path
         name="my_images"
         path="Android/data/it.unisannio.cp.orange.aclient/files/Pictures"/>
+    <external-path
+        name="flashmob"
+        path="Pictures/flashmob"/>
 </paths>
