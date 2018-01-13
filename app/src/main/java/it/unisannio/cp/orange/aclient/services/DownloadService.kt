@@ -15,8 +15,8 @@ import java.io.File
 import java.io.FileOutputStream
 import kotlin.system.exitProcess
 import android.content.pm.PackageManager
-
-
+import android.media.RingtoneManager
+import android.support.v4.app.NotificationCompat
 
 
 /*
@@ -54,12 +54,14 @@ class DownloadService: IntentService("download") {
                     Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
         }
 
-        val builder = Notification.Builder(this)
-        builder.setContentTitle(getString(R.string.download_complete))
-        builder.setContentText(getString(R.string.click_to_open))
-        builder.setSmallIcon(R.drawable.ic_download)
-        builder.setAutoCancel(true)
-        builder.setContentIntent(pending)
+        val builder = NotificationCompat.Builder(this)
+                .setContentTitle(getString(R.string.download_complete))
+                .setContentText(getString(R.string.click_to_open))
+                .setSmallIcon(R.drawable.ic_download)
+                .setAutoCancel(true)
+                .setContentIntent(pending)
+                .setVibrate(longArrayOf(200, 100))
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
 
         val notify = builder.build()
         val notifyManager = NotificationManagerCompat .from(this)
