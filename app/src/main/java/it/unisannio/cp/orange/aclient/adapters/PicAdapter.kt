@@ -16,7 +16,6 @@ import it.unisannio.cp.orange.aclient.R
 import it.unisannio.cp.orange.aclient.model.RequestPermission
 import it.unisannio.cp.orange.aclient.network.rest.Path
 import it.unisannio.cp.orange.aclient.util.toast
-import it.unisannio.cp.orange.aclient.network.rest.GetPhoto
 import it.unisannio.cp.orange.aclient.services.DownloadService
 import it.unisannio.cp.orange.aclient.util.Util
 import it.unisannio.cp.orange.aclient.util.checkPermission
