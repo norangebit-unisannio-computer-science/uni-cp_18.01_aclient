@@ -45,6 +45,8 @@ class Util {
         val CODE_CAMERA_PERMISSION = 2000
         val CODE_SD_PERMISSION = 2001
 
+        val ID_ALARM_JOB = 3000
+
         val AUTHORITY = "it.unisannio.cp.orange.aclient.fileProvider"
 
     }

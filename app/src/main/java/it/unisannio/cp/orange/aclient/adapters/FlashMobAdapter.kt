@@ -25,6 +25,12 @@ import it.unisannio.cp.orange.aclient.services.NotificationPublisherService
 import it.unisannio.cp.orange.aclient.util.Util
 import kotlinx.android.synthetic.main.card_flashmob.view.*
 import java.util.*
+import android.content.ComponentName
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.os.PersistableBundle
+import android.util.Log
+import it.unisannio.cp.orange.aclient.services.AlarmJobService
 
 
 /*
@@ -66,47 +72,16 @@ class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapt
             }
 
             override fun onEvent(button: ImageView, state: Boolean) {
-                /*
                 if (state){
-                    val broadcast = Intent(context, AlarmReceiver::class.java)
-                    broadcast.putExtra(Util.KEY_POS, holder.adapterPosition)
-                    broadcast.putExtra(Util.KEY_TIME, NotificationPublisherService.NOW)
-                    val pending = PendingIntent.getBroadcast(context, Util.CODE_ALARM_RECEIVER, broadcast, PendingIntent.FLAG_UPDATE_CURRENT)
                     if(context?.getSharedPreferences(Util.SP_SETTINGS, Context.MODE_PRIVATE)?.getBoolean(Util.KEY_BATTERY_SAVE, true) ?: true){
                         val elapse = fm.start.time - System.currentTimeMillis()
-                        if(elapse < 15*MINUTE){
-                            broadcast.putExtra(Util.KEY_TIME, NotificationPublisherService.SOON)
-                            context?.sendBroadcast(broadcast)
-                        }
-                        else {
-
-                            val extra = Bundle()
-                            extra.putInt(Util.KEY_POS, holder.adapterPosition)
-                            extra.putInt(Util.KEY_TIME, NotificationPublisherService.NOW)
-
-                            Log.d("firebase", "in")
-
-                            val dispatcher = FirebaseJobDispatcher(GooglePlayDriver(context))
-                            val builder = dispatcher.newJobBuilder()
-                            builder.setService(AlarmJobService::class.java)
-                            builder.tag = "test"
-                            builder.isRecurring = false
-                            builder.trigger = Trigger.executionWindow((elapse-10).toInt(), elapse.toInt())
-                            builder.extras = extra
-                            dispatcher.schedule(builder.build())
-                        }
-                    }else{
-                        val alarmMnager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                        alarmMnager.set(AlarmManager.RTC_WAKEUP, fm.start.time, pending)
-                    }
-                }**/
-
-                val broadcast = Intent(context, AlarmReceiver::class.java)
-                broadcast.putExtra(Util.KEY_POS, holder.adapterPosition)
-                broadcast.putExtra(Util.KEY_TIME, NotificationPublisherService.NOW)
-                val pending = PendingIntent.getBroadcast(context, Util.CODE_ALARM_RECEIVER, broadcast, PendingIntent.FLAG_UPDATE_CURRENT)
-                val alarmMnager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-                alarmMnager.set(AlarmManager.RTC_WAKEUP, fm.start.time, pending)
+                        if(elapse < 15*MINUTE)
+                            sendBroadcast(context, holder.adapterPosition)
+                        else
+                            scheduleJob(context, holder.adapterPosition, MINUTE.toLong())
+                    }else
+                        setAlarm(context, holder.adapterPosition, fm.start.time)
+                }
             }
         })
 
@@ -115,6 +90,38 @@ class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapt
             intent.putExtra(Util.KEY_POS, position)
             startActivity(context, intent, null)
         }
+    }
+
+    fun setAlarm(context: Context?, pos: Int, time: Long){
+        val broadcast = Intent(context, AlarmReceiver::class.java)
+        broadcast.putExtra(Util.KEY_POS, pos)
+        broadcast.putExtra(Util.KEY_TIME, NotificationPublisherService.NOW)
+        val pending = PendingIntent.getBroadcast(context, Util.CODE_ALARM_RECEIVER, broadcast, PendingIntent.FLAG_UPDATE_CURRENT)
+        val alarmMnager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        alarmMnager.set(AlarmManager.RTC_WAKEUP, time, pending)
+    }
+
+    fun scheduleJob(context: Context?, pos: Int, elapse: Long){
+        val extra = PersistableBundle()
+        extra.putInt(Util.KEY_POS, pos)
+
+        val jobScheduler = context?.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+        val builder = JobInfo.Builder(Util.ID_ALARM_JOB+pos,
+                ComponentName(context.packageName, AlarmJobService::class.java.name))
+                .setPeriodic(elapse)
+                .setExtras(extra)
+
+        if( jobScheduler.schedule(builder.build()) == JobScheduler.RESULT_FAILURE) {
+            Log.e("job", "error")
+            setAlarm(context, pos, elapse+System.currentTimeMillis())
+        }
+    }
+
+    fun sendBroadcast(context: Context?, pos: Int){
+        val broadcast = Intent(context, AlarmReceiver::class.java)
+        broadcast.putExtra(Util.KEY_POS, pos)
+        broadcast.putExtra(Util.KEY_TIME, NotificationPublisherService.SOON)
+        context?.sendBroadcast(broadcast)
     }
 }
 

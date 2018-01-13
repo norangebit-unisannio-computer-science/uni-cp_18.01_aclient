@@ -13,11 +13,11 @@
     <string name="skip">skip</string>
     <string name="upload_error">Questa funzione è solo per utenti autenticati</string>
     <string name="now">now</string>
-    <string name="soon">soon</string>
+    <string name="soon">in 15 minutes</string>
     <string name="alarm_set">Allarme impostato</string>
     <string name="already_exist">Hai già scaricato quest\'immagine</string>
     <string name="sd_unmount">Memoria esterna non trovata</string>
     <string name="download_error">Impossibile scaricare l'immagine</string>
     <string name="download_complete">Download completato</string>
-    <string name="click_to_open">Premi per visualizzare la notifica</string>
+    <string name="click_to_open">Premi per visualizzare la foto</string>
 </resources>
