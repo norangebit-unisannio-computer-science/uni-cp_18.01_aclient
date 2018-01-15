@@ -1,6 +1,5 @@
 package it.unisannio.cp.orange.aclient.services
 
-import android.app.Notification
 import android.app.PendingIntent
 import android.app.job.JobParameters
 import android.app.job.JobScheduler
@@ -8,14 +7,14 @@ import android.app.job.JobService
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
+import android.net.Uri
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
-import android.util.Log
 import it.unisannio.cp.orange.aclient.util.Util
 import it.unisannio.cp.orange.aclient.R
 import it.unisannio.cp.orange.aclient.activities.DetailFlashMobActivity
 import it.unisannio.cp.orange.aclient.model.ListInstance
-import java.sql.Timestamp
+import it.unisannio.cp.orange.aclient.util.getSettings
 
 
 /*
@@ -29,6 +28,7 @@ import java.sql.Timestamp
 class AlarmJobService: JobService() {
 
     override fun onStartJob(params: JobParameters?): Boolean{
+        val settings = this.getSettings(R.xml.pref_general)
         val notifyIntent = Intent(this, DetailFlashMobActivity::class.java)
         val pos = params?.extras?.getInt(Util.KEY_POS, 0) ?: 0
         notifyIntent.putExtra(Util.KEY_POS, pos)
@@ -36,14 +36,20 @@ class AlarmJobService: JobService() {
 
         val fm = ListInstance.get(pos)
 
+        val ringtone = settings.getString(Util.SP_NT_FLASHMOB_RING, null)
+        val ringUri = if(ringtone != null) Uri.parse(ringtone)
+                else RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
         val builder = NotificationCompat.Builder(this)
                 .setContentTitle(fm.name)
                 .setContentText("${fm.name}, start ${getString(R.string.now)}")
                 .setSmallIcon(R.drawable.ic_alarm)
                 .setAutoCancel(true)
                 .setContentIntent(pending)
-                .setVibrate(longArrayOf(200, 100))
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setSound(ringUri)
+        if(settings.getBoolean(Util.SP_NT_FLASHMOB_VIBRATE, true))
+            builder.setVibrate(longArrayOf(200, 100))
+
 
         val notify = builder.build()
         val notifyManager = NotificationManagerCompat .from(this)

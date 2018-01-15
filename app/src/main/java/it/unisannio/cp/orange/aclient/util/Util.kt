@@ -1,9 +1,9 @@
 package it.unisannio.cp.orange.aclient.util
 
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.preference.PreferenceManager
 import android.support.v4.content.ContextCompat
 import android.widget.Toast
 
@@ -19,8 +19,15 @@ fun SharedPreferences.change(func: SharedPreferences.Editor.()->SharedPreference
 
 fun Context.toast(resID: Int, duration: Int = Toast.LENGTH_SHORT) = Toast.makeText(this, resID, duration).show()
 
+fun Context.toast(text: String, duration: Int = Toast.LENGTH_SHORT) = Toast.makeText(this, text, duration).show()
+
 fun Context.checkPermission(vararg permission: String) = permission.map { ContextCompat.checkSelfPermission(this, it) }
         .none { it == PackageManager.PERMISSION_DENIED }
+
+fun Context.getSettings(pref: Int, readAgain: Boolean=false): SharedPreferences{
+    PreferenceManager.setDefaultValues(this, pref, readAgain)
+    return PreferenceManager.getDefaultSharedPreferences(this)
+}
 
 class Util {
     companion object {
@@ -30,12 +37,17 @@ class Util {
         val KEY_FIRST_LAUNCH = "first launch"
         val KEY_LOGIN = "login"
         val KEY_POS = "position"
-        val KEY_BATTERY_SAVE = "battery save"
         val KEY_TIME = "time"
         val KEY_FILE = "file"
         val KEY_URL = "url"
 
-        val SP_SETTINGS = "settings"
+        val SP_NT_DOWNLOAD = "notifications_downloads"
+        val SP_NT_DOWNLOAD_RING = "notifications_downloads_ringtone"
+        val SP_NT_DOWNLOAD_VIBRATE = "notifications_downloads_vibrate"
+        val SP_NT_FLASHMOB = "notifications_flashmob"
+        val SP_NT_FLASHMOB_RING = "notifications_flashmob_ringtone"
+        val SP_NT_FLASHMOB_VIBRATE = "notifications_flashmob_vibrate"
+        val SP_BATTERY_SAVE = "battery_save"
 
         val CODE_INTRO = 1000
         val CODE_UPLOAD = 1001

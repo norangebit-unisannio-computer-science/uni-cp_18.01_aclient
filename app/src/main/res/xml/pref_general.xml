@@ -1,0 +1,56 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+    <PreferenceCategory android:title="@string/settings">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="battery_save"
+            android:title="@string/battery_save" />
+
+        <Preference android:title="@string/login">
+            <intent/>
+        </Preference>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Notifiche per i flashmob">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="notifications_flashmob"
+            android:title="@string/notification" />
+
+        <RingtonePreference
+            android:defaultValue="content://settings/system/notification_sound"
+            android:dependency="notifications_flashmob"
+            android:key="notifications_flashmob_ringtone"
+            android:ringtoneType="notification"
+            android:title="@string/pref_title_ringtone" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:dependency="notifications_flashmob"
+            android:key="notifications_flashmob_vibrate"
+            android:title="@string/pref_title_vibrate" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/notifications_download">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="notifications_downloads"
+            android:title="@string/notification" />
+
+        <RingtonePreference
+            android:defaultValue="content://settings/system/notification_sound"
+            android:dependency="notifications_downloads"
+            android:key="notifications_downloads_ringtone"
+            android:ringtoneType="notification"
+            android:title="@string/pref_title_ringtone" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:dependency="notifications_downloads"
+            android:key="notifications_downloads_vibrate"
+            android:title="@string/pref_title_vibrate" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

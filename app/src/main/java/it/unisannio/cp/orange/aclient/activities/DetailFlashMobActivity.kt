@@ -2,7 +2,6 @@ package it.unisannio.cp.orange.aclient.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -14,7 +13,6 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import it.unisannio.cp.orange.aclient.R
 import it.unisannio.cp.orange.aclient.adapters.PicAdapter
@@ -25,6 +23,7 @@ import it.unisannio.cp.orange.aclient.network.rest.Path
 import it.unisannio.cp.orange.aclient.network.rest.PostPhoto
 import it.unisannio.cp.orange.aclient.util.Util
 import it.unisannio.cp.orange.aclient.util.checkPermission
+import it.unisannio.cp.orange.aclient.util.getSettings
 import it.unisannio.cp.orange.aclient.util.toast
 import kotlinx.android.synthetic.main.activity_detail_flash_mob.*
 import kotlinx.android.synthetic.main.content_detail_flash_mob.*
@@ -38,14 +37,14 @@ import kotlin.collections.ArrayList
 class DetailFlashMobActivity : AppCompatActivity(), RequestPermission {
 
     var imagePath = ""
-    var sp: SharedPreferences? = null
+    var settings: SharedPreferences? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail_flash_mob)
         setSupportActionBar(toolbar)
 
-        sp = getSharedPreferences(Util.SP_SETTINGS, Context.MODE_PRIVATE)
+        settings = getSettings(R.xml.pref_general)
 
         fab.setOnClickListener {
             if (checkPermission(android.Manifest.permission.CAMERA))
@@ -94,8 +93,8 @@ class DetailFlashMobActivity : AppCompatActivity(), RequestPermission {
        when(requestCode){
            Util.CODE_UPLOAD -> {
                if(resultCode == Activity.RESULT_OK)
-                   PostPhoto().execute(sp?.getString(Util.KEY_USER, null),
-                           sp?.getString(Util.KEY_PASSWORD, null), imagePath, title.toString())
+                   PostPhoto().execute(settings?.getString(Util.KEY_USER, null),
+                           settings?.getString(Util.KEY_PASSWORD, null), imagePath, title.toString())
            }
            else -> super.onActivityResult(requestCode, resultCode, data)
        }
@@ -113,7 +112,7 @@ class DetailFlashMobActivity : AppCompatActivity(), RequestPermission {
     }
 
     fun takeAndUploadPhoto() {
-        if (sp?.getBoolean(Util.KEY_LOGIN, false) ?: false) {
+        if (settings?.getBoolean(Util.KEY_LOGIN, false) ?: false) {
             val camera = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             var photoFile: File? = null
             try {

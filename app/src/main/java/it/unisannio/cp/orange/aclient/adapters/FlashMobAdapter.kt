@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.varunest.sparkbutton.SparkButton
 import com.varunest.sparkbutton.SparkEventListener
@@ -31,6 +30,8 @@ import android.app.job.JobScheduler
 import android.os.PersistableBundle
 import android.util.Log
 import it.unisannio.cp.orange.aclient.services.AlarmJobService
+import it.unisannio.cp.orange.aclient.util.getSettings
+import it.unisannio.cp.orange.aclient.util.toast
 
 
 /*
@@ -68,12 +69,13 @@ class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapt
             }
 
             override fun onEventAnimationEnd(button: ImageView?, state: Boolean) {
-                Toast.makeText(context, R.string.alarm_set, Toast.LENGTH_SHORT).show()
+                context?.toast(R.string.alarm_set)
             }
 
             override fun onEvent(button: ImageView, state: Boolean) {
+                val settings = context?.getSettings(R.xml.pref_general)
                 if (state){
-                    if(context?.getSharedPreferences(Util.SP_SETTINGS, Context.MODE_PRIVATE)?.getBoolean(Util.KEY_BATTERY_SAVE, true) ?: true){
+                    if(settings?.getBoolean(Util.SP_BATTERY_SAVE, true) ?: true){
                         val elapse = fm.start.time - System.currentTimeMillis()
                         if(elapse < 15*MINUTE)
                             sendBroadcast(context, holder.adapterPosition)

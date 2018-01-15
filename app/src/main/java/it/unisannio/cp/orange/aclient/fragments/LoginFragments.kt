@@ -1,7 +1,6 @@
 package it.unisannio.cp.orange.aclient.fragments
 
 import agency.tango.materialintroscreen.SlideFragment
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +8,7 @@ import android.view.ViewGroup
 import it.unisannio.cp.orange.aclient.R
 import it.unisannio.cp.orange.aclient.util.Util
 import it.unisannio.cp.orange.aclient.util.change
+import it.unisannio.cp.orange.aclient.util.getSettings
 import kotlinx.android.synthetic.main.login.*
 
 
@@ -27,8 +27,8 @@ class LoginFragments: SlideFragment(){
     }
 
     override fun canMoveFurther(): Boolean {
-        val sp = context.getSharedPreferences(Util.SP_SETTINGS, Context.MODE_PRIVATE)
-        sp.change {
+        val settings = context.getSettings(R.xml.pref_general)
+        settings.change {
             putString(Util.KEY_USER, etUserName.text.toString())
             putString(Util.KEY_PASSWORD, etPass.text.toString())
             putBoolean(Util.KEY_LOGIN, true)

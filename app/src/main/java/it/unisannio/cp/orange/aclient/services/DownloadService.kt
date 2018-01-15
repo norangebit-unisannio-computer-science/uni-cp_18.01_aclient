@@ -1,9 +1,9 @@
 package it.unisannio.cp.orange.aclient.services
 
 import android.app.IntentService
-import android.app.Notification
 import android.app.PendingIntent
 import android.content.Intent
+import android.content.SharedPreferences
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.content.FileProvider
 import it.unisannio.cp.orange.aclient.R
@@ -14,9 +14,10 @@ import org.restlet.resource.ResourceException
 import java.io.File
 import java.io.FileOutputStream
 import kotlin.system.exitProcess
-import android.content.pm.PackageManager
 import android.media.RingtoneManager
+import android.net.Uri
 import android.support.v4.app.NotificationCompat
+import it.unisannio.cp.orange.aclient.util.getSettings
 
 
 /*
@@ -29,6 +30,9 @@ import android.support.v4.app.NotificationCompat
 
 class DownloadService: IntentService("download") {
     override fun onHandleIntent(intent: Intent?) {
+
+        val settings = this.getSettings(R.xml.pref_general)
+
         val outFile = intent?.getSerializableExtra("file") as File
         val url = intent.getStringExtra("url")
         val cr = ClientResource(url)
@@ -40,6 +44,11 @@ class DownloadService: IntentService("download") {
             exitProcess(1)
         }
 
+        if(settings.getBoolean(Util.SP_NT_DOWNLOAD, true))
+            sendNotification(settings, outFile)
+    }
+
+    fun sendNotification(settings: SharedPreferences, outFile: File){
         val openPic = Intent(Intent.ACTION_VIEW)
         val uri = FileProvider.getUriForFile(this, Util.AUTHORITY, outFile)
         openPic.setDataAndType(uri, "image/*")
@@ -48,11 +57,9 @@ class DownloadService: IntentService("download") {
 
         val pending = PendingIntent.getActivity(this, Util.CODE_NOTIFY_DOWNLOAD, openPic, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val qApp = this.packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
-        qApp.forEach {
-            this.grantUriPermission(it.activityInfo.packageName, uri,
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION or Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        }
+        val ringtone = settings.getString(Util.SP_NT_DOWNLOAD_RING, null)
+        val ringUri = if(ringtone != null) Uri.parse(ringtone)
+        else RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         val builder = NotificationCompat.Builder(this)
                 .setContentTitle(getString(R.string.download_complete))
@@ -60,8 +67,9 @@ class DownloadService: IntentService("download") {
                 .setSmallIcon(R.drawable.ic_download)
                 .setAutoCancel(true)
                 .setContentIntent(pending)
-                .setVibrate(longArrayOf(200, 100))
-                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setSound(ringUri)
+        if(settings.getBoolean(Util.SP_NT_DOWNLOAD_VIBRATE, true))
+            builder.setVibrate(longArrayOf(200, 100))
 
         val notify = builder.build()
         val notifyManager = NotificationManagerCompat .from(this)
