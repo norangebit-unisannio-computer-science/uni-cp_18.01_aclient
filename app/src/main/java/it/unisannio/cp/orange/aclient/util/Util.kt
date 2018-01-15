@@ -1,5 +1,7 @@
 package it.unisannio.cp.orange.aclient.util
 
+import android.app.FragmentManager
+import android.app.FragmentTransaction
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -16,6 +18,8 @@ import android.widget.Toast
  */
 
 fun SharedPreferences.change(func: SharedPreferences.Editor.()->SharedPreferences.Editor) = this.edit().func().apply()
+
+fun FragmentManager.transaction(func: FragmentTransaction.()-> FragmentTransaction)= this.beginTransaction().func().commit()
 
 fun Context.toast(resID: Int, duration: Int = Toast.LENGTH_SHORT) = Toast.makeText(this, resID, duration).show()
 

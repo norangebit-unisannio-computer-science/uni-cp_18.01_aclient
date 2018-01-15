@@ -125,7 +125,9 @@ class DetailFlashMobActivity : AppCompatActivity(), RequestPermission {
             camera.putExtra(MediaStore.EXTRA_OUTPUT, outputUri)
             startActivityForResult(camera, Util.CODE_UPLOAD)
         } else{
-            Snackbar.make(findViewById(R.id.detail), R.string.upload_error, Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(findViewById(R.id.detail), R.string.upload_error, Snackbar.LENGTH_SHORT)
+                    .setAction(R.string.login, { startActivity(Intent(this, LoginActivity::class.java)) })
+                    .show()
         }
 
     }

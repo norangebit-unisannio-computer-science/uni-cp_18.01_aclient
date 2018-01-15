@@ -9,7 +9,7 @@
             android:title="@string/battery_save" />
 
         <Preference android:title="@string/login">
-            <intent/>
+            <intent android:action="it.unisannio.cp.orange.aclient.LOGIN"/>
         </Preference>
     </PreferenceCategory>
 

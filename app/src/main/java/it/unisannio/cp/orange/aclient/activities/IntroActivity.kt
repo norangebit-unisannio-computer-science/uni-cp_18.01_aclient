@@ -7,7 +7,6 @@ import android.Manifest
 import android.app.Activity
 import android.os.Bundle
 import it.unisannio.cp.orange.aclient.R
-import it.unisannio.cp.orange.aclient.fragments.LoginFragments
 
 
 /*
@@ -38,7 +37,5 @@ class IntroActivity: MaterialIntroActivity() {
                 .description(getString(R.string.intro_slide2_permissions))
                 .possiblePermissions(arrayOf(Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE))
                 .build())
-
-        addSlide(LoginFragments())
     }
 }
