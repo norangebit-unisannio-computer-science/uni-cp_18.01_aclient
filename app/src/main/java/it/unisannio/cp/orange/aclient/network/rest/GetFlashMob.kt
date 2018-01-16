@@ -2,7 +2,7 @@ package it.unisannio.cp.orange.aclient.network.rest
 
 import android.os.AsyncTask
 
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
 import org.restlet.resource.ClientResource
 
@@ -21,7 +21,7 @@ import it.unisannio.cp.orange.aclient.model.ListInstance
 internal class GetFlashMob : AsyncTask<String, Void, FlashMob>() {
 
     override fun doInBackground(vararg strings: String): FlashMob? {
-        val gson = Gson()
+        val gson = GsonBuilder().setDateFormat("dd/MM/yyyy HH:mm").create()
 
         val cr = ClientResource(strings[0])
         val json = cr.get().text
