@@ -13,7 +13,9 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import com.bumptech.glide.Glide
+import commons.FlashMob
 import it.unisannio.cp.orange.aclient.R
 import it.unisannio.cp.orange.aclient.adapters.PicAdapter
 import it.unisannio.cp.orange.aclient.model.ListInstance
@@ -54,7 +56,7 @@ class DetailFlashMobActivity : AppCompatActivity(), RequestPermission {
         }
 
         val fm = ListInstance.get(intent.getIntExtra(Util.KEY_POS, 0))
-
+        fab.visibility = if(isLive(fm)) View.VISIBLE else View.INVISIBLE
         val list = ArrayList<String>()
         val adapter = PicAdapter(list, this)
 
@@ -131,6 +133,8 @@ class DetailFlashMobActivity : AppCompatActivity(), RequestPermission {
         }
 
     }
+
+    fun isLive(fm: FlashMob) = Date().after(fm.start) && Date().before(fm.end)
 
     override fun requestPermission(vararg permission: String) = ActivityCompat.requestPermissions(this, permission, Util.CODE_SD_PERMISSION)
 
