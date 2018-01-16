@@ -10,6 +10,7 @@ package it.unisannio.cp.orange.aclient.network.rest
  
  
 object Path{
-    val ip = "http://192.168.1.201:8182"
+    //val ip = "http://192.168.1.207:8182"
+    val ip = "http://10.0.2.2:8182"
     val COVER="photo/cover.jpg"
 }
