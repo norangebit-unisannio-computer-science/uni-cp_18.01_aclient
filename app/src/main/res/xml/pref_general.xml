@@ -11,6 +11,9 @@
         <Preference android:title="@string/login">
             <intent android:action="it.unisannio.cp.orange.aclient.LOGIN"/>
         </Preference>
+
+        <Preference android:title="@string/logout"
+            android:key="pref_logout"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Notifiche per i flashmob">
@@ -51,6 +54,19 @@
             android:dependency="notifications_downloads"
             android:key="notifications_downloads_vibrate"
             android:title="@string/pref_title_vibrate" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about">
+        <Preference android:title="@string/github">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="https://github.com/OrangeDugongo/UNI-CP__18.01__AClient"/>
+        </Preference>
+
+        <Preference android:title="@string/lib">
+        </Preference>
+
+        <Preference android:title="@string/version"
+            android:summary="0.1"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

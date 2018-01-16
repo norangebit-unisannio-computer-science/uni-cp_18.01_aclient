@@ -32,13 +32,18 @@
         <service
             android:name=".services.NotificationPublisherService"
             android:exported="false" />
+
         <service
             android:name=".services.AlarmJobService"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
         <service
             android:name=".services.DownloadService"
             android:exported="false" />
+
+        <service android:name=".services.LogoutService"
+            android:exported="false"/>
 
         <activity
             android:name=".activities.MainActivity"
@@ -46,21 +51,24 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.DetailFlashMobActivity"
             android:label="@string/title_activity_detail_flash_mob"
             android:theme="@style/AppTheme.NoActionBar"/>
+
         <activity
             android:name=".activities.IntroActivity"
             android:theme="@style/Theme.Intro" />
+
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".activities.MainActivity" />
+
         <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="it.unisannio.cp.orange.aclient.LOGIN"/>

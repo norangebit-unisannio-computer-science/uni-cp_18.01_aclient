@@ -17,6 +17,7 @@ import android.preference.RingtonePreference
 import android.text.TextUtils
 import android.view.MenuItem
 import it.unisannio.cp.orange.aclient.R
+import it.unisannio.cp.orange.aclient.services.LogoutService
 
 /**
  * A [PreferenceActivity] that presents a set of application settings. On
@@ -77,10 +78,13 @@ class SettingsActivity : AppCompatPreferenceActivity() {
             addPreferencesFromResource(R.xml.pref_general)
             setHasOptionsMenu(true)
 
-          //  bindPreferenceSummaryToValue(findPreference("example_text"))
-          //  bindPreferenceSummaryToValue(findPreference("example_list"))
             bindPreferenceSummaryToValue(findPreference("notifications_downloads_ringtone"))
             bindPreferenceSummaryToValue(findPreference("notifications_flashmob_ringtone"))
+            findPreference("pref_logout").setOnPreferenceClickListener {
+                val logout = Intent(it.context, LogoutService::class.java)
+                it.context.startService(logout)
+                true
+            }
         }
 
         override fun onOptionsItemSelected(item: MenuItem): Boolean {

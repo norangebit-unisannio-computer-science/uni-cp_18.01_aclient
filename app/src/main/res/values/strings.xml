@@ -17,7 +17,7 @@
     <string name="alarm_set">Allarme impostato</string>
     <string name="already_exist">Hai già scaricato quest\'immagine</string>
     <string name="sd_unmount">Memoria esterna non trovata</string>
-    <string name="download_error">Impossibile scaricare l'immagine</string>
+    <string name="download_error">Impossibile scaricare l\'immagine</string>
     <string name="download_complete">Download completato</string>
     <string name="click_to_open">Premi per visualizzare la foto</string>
     <string name="title_activity_settings">Settings</string>
@@ -27,13 +27,15 @@
     <string name="settings">Impostazioni</string>
     <string name="battery_save">Risparmio energetico</string>
     <string name="notification">Notifiche</string>
-    <string name="notifications_download">Notifiche per i download</string>
+    <string name="notifications_download">Notifiche per i Download</string>
     <string name="login">Login</string>
-    <string name="notifications_flashmob">Notifiche flashmob</string>
+    <string name="notifications_flashmob">Notifiche Flashmob</string>
     <string name="pref_header_general">General</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_ok">login effettuato con successo</string>
     <string name="login_nope">user name o password errato</string>
+    <string name="about">About</string>
+    <string name="github">Fork me on Github</string>
+    <string name="lib">Librerie Open Source</string>
+    <string name="version">Version</string>
+    <string name="logout">Logout</string>
 </resources>
