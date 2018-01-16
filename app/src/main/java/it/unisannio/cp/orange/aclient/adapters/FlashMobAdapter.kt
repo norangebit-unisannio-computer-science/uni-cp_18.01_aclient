@@ -76,9 +76,9 @@ class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapt
             }
 
             override fun onEvent(button: ImageView, state: Boolean) {
-                stateSP?.change { putBoolean(fm.name, true) }
                 val settings = context?.getSettings(R.xml.pref_general)
                 if (state){
+                    stateSP?.change { putBoolean(fm.name, true) }
                     if(settings?.getBoolean(Util.SP_BATTERY_SAVE, true) ?: true){
                         val elapse = fm.start.time - System.currentTimeMillis()
                         if(elapse < 15*MINUTE)
@@ -87,7 +87,8 @@ class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapt
                             scheduleJob(context, holder.adapterPosition, MINUTE.toLong())
                     }else
                         setAlarm(context, holder.adapterPosition, fm.start.time)
-                }
+                }else
+                    stateSP?.change { putBoolean(fm.name, false) }
             }
         })
 
