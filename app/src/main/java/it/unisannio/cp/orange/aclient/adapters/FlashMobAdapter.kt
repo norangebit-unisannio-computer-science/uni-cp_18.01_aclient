@@ -30,6 +30,7 @@ import android.app.job.JobScheduler
 import android.os.PersistableBundle
 import android.util.Log
 import it.unisannio.cp.orange.aclient.services.AlarmJobService
+import it.unisannio.cp.orange.aclient.util.change
 import it.unisannio.cp.orange.aclient.util.getSettings
 import it.unisannio.cp.orange.aclient.util.toast
 
@@ -58,11 +59,13 @@ class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapt
     override fun onBindViewHolder(holder: FlashMobHolder?, position: Int) {
         val fm = list[position]
         val context = holder?.itemView?.context
+        val stateSP = context?.getSharedPreferences("state", Context.MODE_PRIVATE)
         holder?.title?.text = list[position].name
         Glide.with(holder?.itemView?.context).load("${Path.ip}/${fm.name}/${Path.COVER}")
                 .placeholder(R.color.placeholder).into(holder?.cover)
 
-        holder?.icon?.visibility = if (fm.start.time > System.currentTimeMillis()) View.VISIBLE else View.INVISIBLE //TODO fix orario
+        holder?.icon?.visibility = if (fm.start.time > System.currentTimeMillis()) View.VISIBLE else View.INVISIBLE
+        holder?.icon?.isChecked = stateSP?.getBoolean(fm.name, false) ?: false
 
         holder?.icon?.setEventListener( object : SparkEventListener {
             override fun onEventAnimationStart(button: ImageView?, state: Boolean) {
@@ -73,6 +76,7 @@ class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapt
             }
 
             override fun onEvent(button: ImageView, state: Boolean) {
+                stateSP?.change { putBoolean(fm.name, true) }
                 val settings = context?.getSettings(R.xml.pref_general)
                 if (state){
                     if(settings?.getBoolean(Util.SP_BATTERY_SAVE, true) ?: true){
