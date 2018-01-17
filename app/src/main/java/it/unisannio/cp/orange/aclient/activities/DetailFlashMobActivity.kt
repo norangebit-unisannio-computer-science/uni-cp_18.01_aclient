@@ -47,6 +47,7 @@ class DetailFlashMobActivity : AppCompatActivity(), RequestPermission {
         setSupportActionBar(toolbar)
 
         settings = getSettings(R.xml.pref_general)
+        ListInstance.setContext(this)
 
         fab.setOnClickListener {
             if (checkPermission(android.Manifest.permission.CAMERA))
