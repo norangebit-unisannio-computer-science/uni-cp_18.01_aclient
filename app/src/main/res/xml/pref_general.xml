@@ -16,7 +16,7 @@
             android:key="pref_logout"/>
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Notifiche per i flashmob">
+    <PreferenceCategory android:title="@string/notifications_flashmob">
         <SwitchPreference
             android:defaultValue="true"
             android:key="notifications_flashmob"
