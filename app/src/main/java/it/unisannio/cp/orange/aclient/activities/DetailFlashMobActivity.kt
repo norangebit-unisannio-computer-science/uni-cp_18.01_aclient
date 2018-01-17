@@ -14,6 +14,7 @@ import android.support.v4.content.FileProvider
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import commons.FlashMob
 import it.unisannio.cp.orange.aclient.R
@@ -65,6 +66,11 @@ class DetailFlashMobActivity : AppCompatActivity(), RequestPermission {
         adapter.name = fm.name
         Glide.with(this).load("${Path.ip}/${fm.name}/${Path.COVER}").into(pic)
 
+        if(fm.start.after(Date())){
+            val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm")
+            toast("${getString(R.string.future_event_msg)} ${sdf.format(fm.start.time)}", Toast.LENGTH_LONG)
+        }else if(fm.end.before(Date()))
+            toast(R.string.pass_event_msg, Toast.LENGTH_LONG)
 
         val llm = LinearLayoutManager(applicationContext)
         picList.layoutManager = llm
@@ -107,7 +113,7 @@ class DetailFlashMobActivity : AppCompatActivity(), RequestPermission {
     @Throws(IOException::class)
     fun createImageFile(): File {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmSS").format(Date())
-        val imageFileName = "IMG_" + timeStamp
+        val imageFileName = "${settings?.getString(Util.KEY_USER, "an user")}_" + timeStamp
         val storageDirectory = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val image = File.createTempFile(imageFileName, "", storageDirectory)
         imagePath = image.absolutePath

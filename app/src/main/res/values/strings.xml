@@ -38,4 +38,6 @@
     <string name="version">Version</string>
     <string name="logout">Logout</string>
     <string name="notifications_flashmob">Notifiche per i Flashmob</string>
+    <string name="future_event_msg">Questo evento inizierà il</string>
+    <string name="pass_event_msg">Questo evento è concluso</string>
 </resources>

@@ -4,7 +4,7 @@
 
     <PreferenceCategory android:title="@string/settings">
         <SwitchPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:key="battery_save"
             android:title="@string/battery_save" />
 
@@ -63,6 +63,8 @@
         </Preference>
 
         <Preference android:title="@string/lib">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="https://github.com/OrangeDugongo/UNI-CP__18.01__AClient/wiki/Licence-Open-Sources"/>
         </Preference>
 
         <Preference android:title="@string/version"

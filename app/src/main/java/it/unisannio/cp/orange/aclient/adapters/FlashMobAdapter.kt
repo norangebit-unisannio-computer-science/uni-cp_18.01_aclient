@@ -84,11 +84,20 @@ class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapt
                         if(elapse < 15*MINUTE)
                             sendBroadcast(context, holder.adapterPosition)
                         else
-                            scheduleJob(context, holder.adapterPosition, MINUTE.toLong())
+                            scheduleJob(context, holder.adapterPosition, elapse)
                     }else
                         setAlarm(context, holder.adapterPosition, fm.start.time)
-                }else
+                }else{
                     stateSP?.change { putBoolean(fm.name, false) }
+                    if(settings?.getBoolean(Util.SP_BATTERY_SAVE, true) ?: true){
+                        val jobScheduler = context?.getSystemService(Context.JOB_SCHEDULER_SERVICE) as JobScheduler
+                        jobScheduler.cancel(Util.ID_ALARM_JOB+holder.adapterPosition)
+                    }else{
+                        val pending = preparePending(context, holder.adapterPosition)
+                        val alarmMnager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                        alarmMnager.cancel(pending)
+                    }
+                }
             }
         })
 
@@ -99,16 +108,20 @@ class FlashMobAdapter(private val list: ArrayList<FlashMob>): RecyclerView.Adapt
         }
     }
 
-    fun setAlarm(context: Context?, pos: Int, time: Long){
+    inline fun preparePending(context: Context?, pos: Int): PendingIntent{
         val broadcast = Intent(context, AlarmReceiver::class.java)
         broadcast.putExtra(Util.KEY_POS, pos)
         broadcast.putExtra(Util.KEY_TIME, NotificationPublisherService.NOW)
-        val pending = PendingIntent.getBroadcast(context, Util.CODE_ALARM_RECEIVER, broadcast, PendingIntent.FLAG_UPDATE_CURRENT)
+        return PendingIntent.getBroadcast(context, Util.CODE_ALARM_RECEIVER, broadcast, PendingIntent.FLAG_UPDATE_CURRENT)
+    }
+
+    fun setAlarm(context: Context?, pos: Int, time: Long){
+        val pending = preparePending(context, pos)
         val alarmMnager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         alarmMnager.set(AlarmManager.RTC_WAKEUP, time, pending)
     }
 
-    fun scheduleJob(context: Context?, pos: Int, elapse: Long){
+    fun scheduleJob(context: Context?, pos: Int, elapse: Long){     //Not work well
         val extra = PersistableBundle()
         extra.putInt(Util.KEY_POS, pos)
 
