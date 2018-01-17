@@ -1,6 +1,7 @@
 package it.unisannio.cp.orange.aclient.network.rest
 
 import android.os.AsyncTask
+import android.util.Log
 
 import com.google.gson.Gson
 
@@ -19,11 +20,12 @@ class GetList : AsyncTask<String, Void, Array<String>>() {
 
     override fun doInBackground(vararg strings: String): Array<String>?{
         val gson = Gson()
+        val cr = ClientResource(strings[0])
         try {
-            val cr = ClientResource(strings[0])
             val json = cr.get().text
             return gson.fromJson(json, Array<String>::class.java)
         } catch (e: ResourceException) {
+            Log.e("ERROR", "${cr.status.code}: ${cr.status.description} - ${cr.status.reasonPhrase}")
         }
 
         return null

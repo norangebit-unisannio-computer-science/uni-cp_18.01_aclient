@@ -17,6 +17,7 @@ import kotlin.system.exitProcess
 import android.media.RingtoneManager
 import android.net.Uri
 import android.support.v4.app.NotificationCompat
+import android.util.Log
 import it.unisannio.cp.orange.aclient.util.getSettings
 
 
@@ -40,6 +41,7 @@ class DownloadService: IntentService("download") {
         try {
             cr.get().write(FileOutputStream(outFile))
         }catch (e: ResourceException) {
+            Log.e("ERROR", "${cr.status.code}: ${cr.status.description} - ${cr.status.reasonPhrase}")
             toast(R.string.download_error)
             exitProcess(1)
         }

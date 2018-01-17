@@ -3,6 +3,7 @@ package it.unisannio.cp.orange.aclient.network.rest
 import org.restlet.representation.FileRepresentation
 import org.restlet.resource.ClientResource
 import android.os.AsyncTask
+import android.util.Log
 import org.restlet.data.ChallengeScheme
 import org.restlet.data.MediaType
 import org.restlet.resource.ResourceException
@@ -30,9 +31,9 @@ class PostPhoto : AsyncTask<String, Void, String>() {
             cr.setChallengeResponse(ChallengeScheme.HTTP_BASIC, params[0], params[1])
             response = cr.post(payload).text
         } catch (e: IOException) {
-            //TODO
+            Log.e("ERROR", e.message)
         } catch (e: ResourceException){
-            //TODO
+            Log.e("ERROR", "${cr.status.code}: ${cr.status.description} - ${cr.status.reasonPhrase}")
         }
 
         return response

@@ -1,6 +1,7 @@
 package it.unisannio.cp.orange.aclient.network.rest
 
 import android.os.AsyncTask
+import android.util.Log
 import com.google.gson.Gson
 import it.unisannio.cp.orange.aclient.adapters.PicAdapter
 import org.restlet.resource.ClientResource
@@ -19,11 +20,12 @@ class GetPhotos(val list: ArrayList<String>, val adapter: PicAdapter): AsyncTask
 
     override fun doInBackground(vararg params: String?): Array<String>? {
         val gson = Gson()
+        val cr = ClientResource(params[0])
         try {
-            val cr = ClientResource(params[0])
             val json = cr.get().text
             return gson.fromJson(json, Array<String>::class.java)
         } catch (e: ResourceException) {
+            Log.e("ERROR", "${cr.status.code}: ${cr.status.description} - ${cr.status.reasonPhrase}")
         }
 
         return null
