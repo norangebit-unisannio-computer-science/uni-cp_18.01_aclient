@@ -49,7 +49,8 @@ object ListInstance{
     }
 
     fun load(){
-        sp?.all?.keys?.forEach { list.add(gson.fromJson(sp?.getString(it, "null"), FlashMob::class.java)) }
+        sp?.all?.keys?.forEach { add(gson.fromJson(sp?.getString(it, "null"), FlashMob::class.java)) }
+        sort()
         adapter.notifyDataSetChanged()
     }
 

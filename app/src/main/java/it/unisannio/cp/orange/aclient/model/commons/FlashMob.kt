@@ -20,6 +20,6 @@ data class FlashMob (var name: String, var start: Date, var end: Date,
             compare = end.compareTo(other.end)
         if(compare==0)
             compare = name.compareTo(other.name)
-        return compare
+        return -compare
     }
 }
